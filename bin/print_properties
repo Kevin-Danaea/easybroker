@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/easy_broker'
+
+API_KEY = 'l7u502p8v46ba3ppgvj5y2aad50lb9'
+BASE_URL = 'https://api.stagingeb.com'
+
+begin
+  puts "Initializing EasyBroker Client..."
+  client = EasyBroker::ApiClient.new(api_key: API_KEY, base_url: BASE_URL)
+  
+  puts "Fetching all properties (this may take a moment)..."
+  repository = EasyBroker::PropertyRepository.new(client)
+  
+  properties = repository.find_all
+  
+  puts "\nFound #{properties.count} properties:"
+  puts "-" * 40
+  
+  properties.each do |property|
+    puts property.title
+  end
+  
+  puts "-" * 40
+  puts "Done."
+
+rescue StandardError => e
+  puts "An error occurred: #{e.message}"
+end
